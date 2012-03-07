@@ -224,7 +224,6 @@ static GList *
 create_file_menu (void)
 {
     GList *entries = NULL;
-
     entries = g_list_prepend (entries, menu_entry_create (_("&View"), CK_View));
     entries = g_list_prepend (entries, menu_entry_create (_("Vie&w file..."), CK_ViewFile));
     entries = g_list_prepend (entries, menu_entry_create (_("&Filtered view"), CK_ViewFiltered));
@@ -265,6 +264,7 @@ create_command_menu (void)
      */
     GList *entries = NULL;
 
+    entries = g_list_prepend (entries, menu_entry_create (_("Test"), CK_Test));
     entries = g_list_prepend (entries, menu_entry_create (_("&User menu"), CK_UserMenu));
     entries = g_list_prepend (entries, menu_entry_create (_("&Directory tree"), CK_Tree));
     entries = g_list_prepend (entries, menu_entry_create (_("&Find file"), CK_Find));
@@ -1007,6 +1007,13 @@ quit_cmd_internal (int quiet)
     return (quit != 0);
 }
 
+static gboolean
+test_cmd_internal (int quiet)
+{
+   char msg[BUF_MEDIUM];
+   query_dialog (_("Honza"), "Honza", D_NORMAL, 2, _("&Yes"), _("&No"));
+}
+
 /* --------------------------------------------------------------------------------------------- */
 
 static gboolean
@@ -1174,6 +1181,9 @@ midnight_execute_cmd (Widget * sender, unsigned long command)
     case CK_Help:
         help_cmd ();
         break;
+    case CK_Test:
+      test_cmd ();
+      break;
     case CK_History:
         /* show the history of command line widget */
         send_message (&cmdline->widget, WIDGET_COMMAND, CK_History);
@@ -1551,7 +1561,7 @@ update_menu (void)
 
 void
 midnight_set_buttonbar (WButtonBar * b)
-{
+{  
     buttonbar_set_label (b, 1, Q_ ("ButtonBar|Help"), main_map, NULL);
     buttonbar_set_label (b, 2, Q_ ("ButtonBar|Menu"), main_map, NULL);
     buttonbar_set_label (b, 3, Q_ ("ButtonBar|View"), main_map, NULL);
@@ -1633,6 +1643,15 @@ quiet_quit_cmd (void)
 {
     print_last_revert = TRUE;
     return quit_cmd_internal (1);
+}
+
+/* --------------------------------------------------------------------------------------------- */
+
+gboolean
+test_cmd (void)
+{
+    print_last_revert = TRUE;
+    return test_cmd_internal (1);
 }
 
 /* --------------------------------------------------------------------------------------------- */

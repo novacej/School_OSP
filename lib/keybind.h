@@ -120,6 +120,7 @@ enum
     CK_Bookmark,
     CK_Quit,
     CK_QuitQuiet,
+    CK_Test,
     /* C-x or similar */
     CK_ExtendedKeyMap,
 
